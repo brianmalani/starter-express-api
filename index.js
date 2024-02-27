@@ -7,13 +7,17 @@ const PORT = process.env.PORT || 3000;
 
 const connectDB = async () => {
     try {
-      const conn = await mongoose.connect(process.env.MONGO_URI);
-      console.log(`MongoDB Connected: ${conn.connection.host}`);
+        const conn = await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: false // Set useFindAndModify to false
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
-      console.log(error);
-      process.exit(1);
+        console.log(error);
+        process.exit(1);
     }
-  }
+};
 
 // Middleware
 app.use(express.json());
@@ -31,8 +35,8 @@ app.use('/api/users', userRoutes);
 
 // Connect to the database before listening
 connectDB().then(() => {
-  // Start the server
-  app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-  });
+    // Start the server
+    app.listen(PORT, () => {
+        console.log(`Server is listening on port ${PORT}`);
+    });
 });
