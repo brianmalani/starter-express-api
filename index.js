@@ -7,13 +7,14 @@ const PORT = process.env.PORT || 3000;
 
 const connectDB = async () => {
     try {
-      const conn = await mongoose.connect(process.env.MONGO_URI);
+      const conn = await mongoose.connect(process.env.MONGO_URI, {});
       console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       process.exit(1);
     }
-  }
+  };
+  
 
 // Middleware
 app.use(express.json());
@@ -28,6 +29,11 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
+
+
+app.get('/', (req,res) => {
+    res.json({"every thing":"is awesome"})
+})
 
 // Connect to the database before listening
 connectDB().then(() => {
